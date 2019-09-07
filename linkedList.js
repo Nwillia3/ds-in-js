@@ -119,6 +119,26 @@ class LinkedList {
 		this.length--;
 		return currentNode.element;
 	}
+
+	reverse() {
+		let currNode = this.head;
+		let prevNode = null;
+		let nextNode = null;
+
+		while (currNode) {
+			// Store next node.
+			nextNode = currNode.next;
+
+			// Change next node of the current node so it would link to previous node.
+			currNode.next = prevNode;
+
+			// Move prevNode and currNode nodes one step forward.
+			prevNode = currNode;
+			currNode = nextNode;
+		}
+		this.head = prevNode;
+		return this;
+	}
 }
 
 const vehicles = new LinkedList();
@@ -128,17 +148,20 @@ vehicles.append('SUV');
 vehicles.append('coups');
 vehicles.append('18-wheelers');
 
-// vehicles.preappend('Jeep');
+vehicles.preappend('Jeep');
 
-// console.log(vehicles.size);
-// console.log(vehicles.removeAt(6));
-// vehicles.append('bicycle');
-// vehicles.append('scotter');
-// console.log(vehicles.size);
-// vehicles.addAt(1, 'Mini-Vans');
-// console.log(vehicles.isEmpty());
+console.log(vehicles.size());
+console.log(vehicles.removeAt(6));
+vehicles.append('bicycle');
+vehicles.append('scotter');
+console.log(vehicles.size());
+vehicles.addAt(1, 'Mini-Vans');
+console.log(vehicles.isEmpty());
 
 console.log(vehicles.elementAt(1));
 console.log(vehicles.remove('trucks'));
 console.log(vehicles.indexOf('bicycle'));
 console.log(vehicles.removeAt(1));
+console.log(vehicles.reverse());
+
+console.log(vehicles.head.element);
