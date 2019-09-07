@@ -1,70 +1,144 @@
 class Node {
-	constructor(value, next = null) {
-		this.value = value;
-		this.next = next;
+	constructor(element) {
+		this.element = element;
+		this.next = null;
 	}
 }
-
 class LinkedList {
 	constructor() {
+		this.length = 0;
 		this.head = null;
-		this.size = 0;
+	}
+	size() {
+		return this.length;
+	}
+	head() {
+		return this.head;
 	}
 
-	preappend(value) {
-		const newNode = new Node(value, this.head);
+	preappend(element) {
+		const newNode = new Node(element, this.head);
 		this.head = newNode;
 
-		this.size++; // increments size of by 1
+		this.length++; // increments size of by 1
 	}
 
-	append(value) {
-		const newNode = new Node(value);
-		//if there is no head
-		if (!this.head) {
-			this.head = newNode;
+	append(element) {
+		let node = new Node(element);
+		if (this.head === null) {
+			this.head = node;
 		} else {
-			// Attach new node to the end of linked list.
-			let currentNode = newNode; //track the node that is being usedinside the loop below
-
-			//follows each next pointer until the end. The last node in the list has next = null so when we reach that node, we know we're at the end.
+			let currentNode = this.head;
 			while (currentNode.next) {
 				currentNode = currentNode.next;
 			}
-			// at this point current = last node in list
-			currentNode.next = newNode;
+			currentNode.next = node;
 		}
-
-		this.size++;
+		this.length++;
 	}
-
-	delete(value) {
+	remove(element) {
 		let currentNode = this.head;
 		let previousNode;
-
-		//edge case if there is no head
-		if (!this.head) {
-			return null;
-		}
-
-		//if the value to be deleted is the head make the next node the head
-		if (currentNode.value === value) {
+		if (currentNode.element === element) {
 			this.head = currentNode.next;
 		} else {
-			while (currentNode.value !== value) {
-				// while the node we are on does !== the node we are looking for
+			while (currentNode.element !== element) {
+				previousNode = currentNode;
+				currentNode = currentNode.next;
+				if (currentNode.next === null) {
+					return `${element} does not exist`;
+				}
+			}
+			previousNode.next = currentNode.next;
+		}
+		this.length--;
+	}
+	isEmpty() {
+		return this.length === 0;
+	}
+	indexOf(element) {
+		let currentNode = this.head;
+		let index = -1;
+		while (currentNode) {
+			index++;
+			if (currentNode.element === element) {
+				return index;
+			}
+			currentNode = currentNode.next;
+		}
+		return -1;
+	}
+	elementAt(index) {
+		let currentNode = this.head;
+		let count = 0;
+		while (count < index) {
+			count++;
+			currentNode = currentNode.next;
+		}
+		return currentNode.element;
+	}
+	addAt(index, element) {
+		let node = new Node(element);
+		let currentNode = this.head;
+		let previousNode;
+		let currentIndex = 0;
+		if (index > this.length) {
+			return false;
+		}
+		if (index === 0) {
+			node.next = currentNode;
+			this.head = node;
+		} else {
+			while (currentIndex < index) {
+				currentIndex++;
 				previousNode = currentNode;
 				currentNode = currentNode.next;
 			}
-			previousNode.next = currentNode.next; // skips over the current node and point to the next node
+			node.next = currentNode;
+			previousNode.next = node;
 		}
-
-		this.size--;
+		this.length++;
 	}
-
-	isEmpty() {
-		return this.size === 0; // returns boolean of whether or not the list is empty
+	removeAt(index) {
+		let currentNode = this.head;
+		let previousNode;
+		let currentIndex = 0;
+		if (index < 0 || index >= this.length) {
+			return null;
+		}
+		if (index === 0) {
+			this.head = currentNode.next;
+		} else {
+			while (currentIndex < index) {
+				currentIndex++;
+				previousNode = currentNode;
+				currentNode = currentNode.next;
+			}
+			previousNode.next = currentNode.next;
+		}
+		this.length--;
+		return currentNode.element;
 	}
-
-	indexOf() {}
 }
+
+const vehicles = new LinkedList();
+vehicles.append('Trucks');
+vehicles.append('Sudans');
+vehicles.append('SUV');
+vehicles.append('coups');
+vehicles.append('18-wheelers');
+
+// vehicles.preappend('Jeep');
+
+// console.log(vehicles.size);
+// console.log(vehicles.removeAt(6));
+// vehicles.append('bicycle');
+// vehicles.append('scotter');
+// console.log(vehicles.size);
+// vehicles.addAt(1, 'Mini-Vans');
+// console.log(vehicles.isEmpty());
+
+console.log(vehicles.elementAt(1));
+console.log(vehicles.remove('trucks'));
+console.log(vehicles.indexOf('bicycle'));
+console.log(vehicles.removeAt(1));
