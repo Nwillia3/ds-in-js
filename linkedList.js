@@ -16,13 +16,6 @@ class LinkedList {
 		return this.head;
 	}
 
-	preappend(element) {
-		const newNode = new Node(element, this.head);
-		this.head = newNode;
-
-		this.length++; // increments size of by 1
-	}
-
 	append(element) {
 		let node = new Node(element);
 		if (this.head === null) {
@@ -68,6 +61,7 @@ class LinkedList {
 		}
 		return -1;
 	}
+
 	elementAt(index) {
 		let currentNode = this.head;
 		let count = 0;
@@ -148,10 +142,10 @@ vehicles.append('SUV');
 vehicles.append('coups');
 vehicles.append('18-wheelers');
 
-vehicles.preappend('Jeep');
+console.log(vehicles.addAt(0, 'Jeep'));
 
 console.log(vehicles.size());
-console.log(vehicles.removeAt(6));
+console.log(vehicles.removeAt(2));
 vehicles.append('bicycle');
 vehicles.append('scotter');
 console.log(vehicles.size());
@@ -164,4 +158,4 @@ console.log(vehicles.indexOf('bicycle'));
 console.log(vehicles.removeAt(1));
 console.log(vehicles.reverse());
 
-console.log(vehicles.head.element);
+console.log(vehicles.head);
